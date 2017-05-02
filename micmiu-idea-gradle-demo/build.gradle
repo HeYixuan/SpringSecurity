@@ -1,0 +1,89 @@
+group 'micmiu-idea-boot'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+
+    repositories {
+        //mavenLocal()//maven的本地仓
+        //jcenter()//官方仓
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        //mavenCentral("http://maven.aliyun.com/nexus/content/groups/public/")
+    }
+    dependencies {
+        //classpath("org.gradle.api.plugins:gradle-tomcat-plugin:1.5.2")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+version = '1.0'
+buildDir = 'target'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'micmiu'
+    version =  '1.0'
+}
+
+configurations {
+    //不进行依赖传递，否则要下载很多依赖项
+    //例如 flex-framework
+    starling.transitive = false
+}
+
+
+
+repositories {
+    mavenCentral()
+    //mavenCentral("http://maven.aliyun.com/nexus/content/groups/public/")
+    //jcenter()
+}
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    //compile : 编译时需要的依赖
+    //runtime : 运行时需要的依赖,包括compile
+    //testCompile : testCase编译时需要的依赖
+    //testRuntime : testCase运行时需要的依赖,包括testCompile
+    //还有两个不常用的archives、defaul
+    
+    compile 'org.springframework.boot:spring-boot-starter-web:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-aop:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-actuator:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:1.5.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-redis:1.4.5.RELEASE'
+    compile 'org.springframework.session:spring-session-data-redis:1.3.0.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.2.RELEASE'
+
+    //compile 'org.springframework.boot:spring-boot-starter-log4j:1.3.8.RELEASE'
+
+
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
+    //compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.2.0'
+    compile 'mysql:mysql-connector-java:5.1.40'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.springframework.boot:spring-boot-starter-dao:1.5.2.RELEASE'
+}
+
+
+idea.project {
+    jdkName = '1.8'
+    languageLevel = '1.8'
+}

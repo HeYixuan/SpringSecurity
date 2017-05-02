@@ -1,0 +1,37 @@
+server:
+    port: 8089
+
+spring:
+    thymeleaf:
+        cache: false
+        enabled: true
+        check-template-location: true
+        encoding: UTF-8
+        prefix: classpath:/templates/
+        suffix: .html
+        content-type: text/html
+        mode: HTML5
+
+    aop:
+        auto: true
+        proxy-target-class: false
+#com.mysql.jdbc.Driver
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        #url: jdbc:mysql://localhost:3306/springsecurity?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        url: jdbc:mysql://localhost:3306/springsecurity?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+            dialect: org.hibernate.dialect.MySQL5Dialect
+            naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
+
+#secondary:
+#            driver-class-name: com.mysql.jdbc.Driver
+#            url: jdbc:mysql://localhost:3306/springsecurity
+#            usernmae: root
+#            password: 123456
+
