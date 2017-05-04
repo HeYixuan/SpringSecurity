@@ -36,7 +36,7 @@ public class SystemResoucesTest extends BaseTest {
      * @return
      */
     @Test
-    public void getListByParent(){
+    public void getListByParentId(){
         Collection<SystemResources> resources = systemResourcesDao.getListByParentId(new Object[]{1});
         resources.forEach(r->{
             System.err.println(r.toString());

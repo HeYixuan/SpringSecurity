@@ -15,4 +15,11 @@ public interface SystemRoleDao extends BaseDao<SystemRole> {
      * @return
      */
     public List<SystemRole> getRoles(Object[] params);
+
+
+    /**
+     * 查询所有的角色
+     * @return
+     */
+    public List<SystemRole> getList();
 }

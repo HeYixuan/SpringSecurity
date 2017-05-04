@@ -10,6 +10,7 @@ import org.springframe.dao.SystemRoleDao;
 import org.springframe.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,16 +25,18 @@ public class SystemRoleTest extends BaseTest {
     @Autowired
     private SystemRoleService systemRoleService;
 
+
     @Test
     public void getList(){
-        String sql ="SELECT * FROM SYSTEM_ROLE";
-        Page<SystemRole> pageList = systemRoleDao.getList(sql,new Object[]{},1,10);
-        System.err.println("结果:"+pageList.getRows());
+        Collection<SystemRole> roles = systemRoleDao.getList();
+        roles.forEach(role->{
+            System.err.println(role.toString());
+        });
     }
 
    @Test
-   public void loadByUsername(){
-       List<SystemRole> roles = systemRoleService.getRoles("ZM");
+   public void getRoles(){
+       List<SystemRole> roles = systemRoleService.getRoles("HeYixuan");
        try{
            roles.forEach(role -> {
                System.err.println("角色:" + role.getName());

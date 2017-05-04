@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,7 +18,7 @@ public class SystemResources implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(nullable = false, columnDefinition = "int(10)")
+    @Column( nullable= false, columnDefinition = "int(10)")
     private Integer id;
 
     /**
@@ -34,6 +35,12 @@ public class SystemResources implements Serializable {
     private String url;
 
     /**
+     * 样式
+     */
+    @Column(nullable = true, columnDefinition = "varchar(255)")
+    private String clazz;
+
+    /**
      * 动作:按钮,菜单
      */
     @Enumerated(EnumType.STRING)
@@ -44,13 +51,18 @@ public class SystemResources implements Serializable {
      * 上级资源
      * 父节点ID
      */
-    @ManyToOne
+    @Column(nullable= true, columnDefinition = "int(10)")
+    private Integer parentId;
+    /*@ManyToOne
     @JoinColumn(name="parent_id")
-    private SystemResources parentId;
+    private SystemResources parentId;*/
 
     /**下级资源*/
-    @OneToMany(mappedBy="parentId", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    private Set<SystemResources> children = new HashSet<SystemResources>();
+    //private List<SystemResources> children;
+
+    /*@OneToMany(mappedBy="parentId", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<SystemResources> children = new HashSet<SystemResources>();*/
+
 
     /**
      * 权限描述
@@ -106,12 +118,20 @@ public class SystemResources implements Serializable {
         this.action = action;
     }
 
-    public SystemResources getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(SystemResources parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
     }
 
     public String getDescritpion() {

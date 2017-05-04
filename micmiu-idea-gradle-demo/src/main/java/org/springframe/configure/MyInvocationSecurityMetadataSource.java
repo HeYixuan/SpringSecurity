@@ -1,10 +1,17 @@
 package org.springframe.configure;
 
+import org.springframe.dao.SystemResourcesDao;
+import org.springframe.domain.SystemResources;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -19,7 +26,33 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
+    @Autowired
+    private SystemResourcesDao systemResourcesDao;
+
     private ConcurrentMap<String, Collection<ConfigAttribute>> resourceMap = null;
+
+
+    public void init(){
+
+    }
+
+    /**
+     *
+     * 程序启动的时候就加载所有资源信息
+     * 初始化资源与权限的映射关系
+     */
+    public void loadResources(){
+        // 在Web服务器启动时，提取系统中的所有权限
+        Collection<SystemResources> resources = systemResourcesDao.getList();
+        //应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
+        resourceMap =  new ConcurrentHashMap<>();
+        if ( !CollectionUtils.isEmpty(resources) ){
+            resources.forEach(r->{
+
+            });
+        }
+    }
+
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         // object 是一个URL，被用户请求的url。</span>

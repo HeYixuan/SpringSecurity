@@ -18,8 +18,7 @@ public class SystemResourcesDaoImpl extends BaseDaoImpl<SystemResources> impleme
         builder.append("SELECT S.* FROM SYSTEM_RESOURCES S,SYSTEM_ROLE_RESOURCE RS ");
         builder.append("WHERE RS.SYSTEM_RESOURCE_ID = S.ID ");
         builder.append("AND RS.SYSTEM_ROLE_ID = ?;");
-        Collection<SystemResources> resources = this.getList(builder.toString(), new Object[]{role});
-        return resources;
+        return this.getList(builder.toString(), new Object[]{role});
     }
 
     @Override
@@ -29,16 +28,14 @@ public class SystemResourcesDaoImpl extends BaseDaoImpl<SystemResources> impleme
         builder.append("LEFT JOIN SYSTEM_RESOURCES AS T2 ");
         builder.append("ON T2.PARENT_ID = T1.ID ");
         builder.append("WHERE T1.ID= ?;");
-        Collection<SystemResources> resources = this.getList(builder.toString(), params);
-        return null;
+        return this.getList(builder.toString(), params);
     }
 
     @Override
     public Collection<SystemResources> getList() {
         StringBuilder builder = new StringBuilder();
         builder.append("SELECT * FROM SYSTEM_RESOURCES R;");
-        Collection<SystemResources> resources = this.getList(builder.toString());
-        return resources;
+        return this.getList(builder.toString());
     }
 
 }
