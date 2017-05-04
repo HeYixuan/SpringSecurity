@@ -49,8 +49,7 @@ public class SystemResources implements Serializable {
     private SystemResources parentId;
 
     /**下级资源*/
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    @JoinColumn(name="parent_id")
+    @OneToMany(mappedBy="parentId", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<SystemResources> children = new HashSet<SystemResources>();
 
     /**

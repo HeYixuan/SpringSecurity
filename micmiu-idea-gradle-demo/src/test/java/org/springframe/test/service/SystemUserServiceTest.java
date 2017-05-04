@@ -1,7 +1,7 @@
-package org.springframe.dao.service;
+package org.springframe.test.service;
 
 import org.junit.Test;
-import org.springframe.BaseTest;
+import org.springframe.test.BaseTest;
 import org.springframe.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 

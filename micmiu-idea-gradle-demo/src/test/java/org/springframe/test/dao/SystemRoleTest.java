@@ -1,9 +1,9 @@
-package org.springframe.dao.dao;
+package org.springframe.test.dao;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframe.BaseTest;
+import org.springframe.test.BaseTest;
 import org.springframe.domain.SystemRole;
 import org.springframe.service.SystemRoleService;
 import org.springframe.dao.SystemRoleDao;

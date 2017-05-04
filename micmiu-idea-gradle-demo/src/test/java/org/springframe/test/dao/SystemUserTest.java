@@ -1,7 +1,7 @@
-package org.springframe.dao.dao;
+package org.springframe.test.dao;
 
 import org.junit.Test;
-import org.springframe.BaseTest;
+import org.springframe.test.BaseTest;
 import org.springframe.domain.SystemUser;
 import org.springframe.dao.SystemUserDao;
 import org.springframework.beans.factory.annotation.Autowired;

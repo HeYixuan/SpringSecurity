@@ -17,7 +17,7 @@ public class SystemRoleDaoImpl extends BaseDaoImpl<SystemRole> implements System
         StringBuilder builder = new StringBuilder();
         builder.append("SELECT R.NAME FROM SYSTEM_ROLE R,SYSTEM_USER_ROLE UR ");
         builder.append("WHERE R.ID = UR.SYSTEM_ROLE_ID ");
-        builder.append("AND UR.SYSTEM_USER_ID = ?");
+        builder.append("AND UR.SYSTEM_USER_ID = ?;");
         return this.getList(builder.toString(), params);
     }
 }

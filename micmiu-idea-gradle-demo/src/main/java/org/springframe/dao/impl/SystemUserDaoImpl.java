@@ -18,7 +18,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser> implements System
      * @return
      */
     public SystemUser loadByUsername(String username) {
-        String sql = "SELECT U.* FROM SYSTEM_USER U WHERE U.USERNAME = ?";
+        String sql = "SELECT U.* FROM SYSTEM_USER U WHERE U.USERNAME = ?;";
         return this.get(sql, new Object[]{username});
     }
 
@@ -27,7 +27,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser> implements System
      * @param username
      */
     public void updateAttempts(String username){
-        String sql = "UPDATE SYSTEM_USER SET ATTEMPTS = ATTEMPTS + 1, LAST_TIME = ? WHERE USERNAME = ?";
+        String sql = "UPDATE SYSTEM_USER SET ATTEMPTS = ATTEMPTS + 1, LAST_TIME = ? WHERE USERNAME = ?;";
         this.update(sql, new Object[]{new Date(), username});
     }
 
@@ -36,7 +36,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser> implements System
      * @param username
      */
     public void resetAttempts(String username){
-        String sql = "UPDATE SYSTEM_USER SET ATTEMPTS = 0, LAST_TIME = ? WHERE USERNAME = ?";
+        String sql = "UPDATE SYSTEM_USER SET ATTEMPTS = 0, LAST_TIME = ? WHERE USERNAME = ?;";
         this.update(sql, new Object[]{new Date(), username});
     }
 
@@ -47,7 +47,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser> implements System
      */
     public boolean isExists(String username) {
         boolean result = false;
-        String sql = "SELECT COUNT(1) FROM SYSTEM_USER WHERE USERNAME = ?";
+        String sql = "SELECT COUNT(1) FROM SYSTEM_USER WHERE USERNAME = ?;";
         int count = count(sql, new Object[]{username});
         if (count > 0) {
             result = true;
@@ -60,7 +60,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser> implements System
      * @param username
      */
     public void lock(String username, boolean bool){
-        String sql = "UPDATE SYSTEM_USER SET ACCOUNT_NON_LOCKED = ?, LAST_TIME = ? WHERE USERNAME = ?";
+        String sql = "UPDATE SYSTEM_USER SET ACCOUNT_NON_LOCKED = ?, LAST_TIME = ? WHERE USERNAME = ?;";
         this.update(sql, new Object[]{bool, new Date(), username});
     }
 }
