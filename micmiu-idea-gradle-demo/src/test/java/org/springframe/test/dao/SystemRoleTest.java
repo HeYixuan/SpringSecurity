@@ -1,5 +1,6 @@
 package org.springframe.test.dao;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +58,10 @@ public class SystemRoleTest extends BaseTest {
 
     @Test
     public void getList3(){
-        List<SystemRole> roles = systemRoleDao.getList("SELECT * FROM SYSTEM_ROLE WHERE ID = ?", new Object[]{1});
-
-        roles.forEach(role->{
+        List<SystemRole> roles = systemRoleDao.getList("SELECT * FROM SYSTEM_ROLE WHERE ID = ?", new Object[]{6});
+        System.err.println(roles);
+        //TODO:空就不会进入,使用的是迭代
+        roles.forEach( role -> {
             System.err.println("角色集合:"+role.getName());
         });
 

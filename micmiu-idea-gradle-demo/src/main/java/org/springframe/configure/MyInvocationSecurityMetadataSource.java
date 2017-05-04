@@ -1,16 +1,21 @@
 package org.springframe.configure;
 
 import org.springframe.dao.SystemResourcesDao;
+import org.springframe.dao.SystemRoleDao;
 import org.springframe.domain.SystemResources;
+import org.springframe.domain.SystemRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,6 +31,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
+    @Autowired
+    private SystemRoleDao systemRoleDao;
     @Autowired
     private SystemResourcesDao systemResourcesDao;
 
@@ -43,20 +50,65 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
      */
     public void loadResources(){
         // 在Web服务器启动时，提取系统中的所有权限
-        Collection<SystemResources> resources = systemResourcesDao.getList();
+        Collection<SystemRole> roles = systemRoleDao.getList();
+        //Collection<SystemResources> resources = systemResourcesDao.getList();
         //应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
-        resourceMap =  new ConcurrentHashMap<>();
-        if ( !CollectionUtils.isEmpty(resources) ){
-            resources.forEach(r->{
 
+        resourceMap =  new ConcurrentHashMap<>();
+            roles.forEach( role -> {
+                Collection<SystemResources> resources = systemResourcesDao.loadByRole(role.getId());
+                resources.forEach( r -> {
+                    ConfigAttribute ca = new SecurityConfig(role.getName().name());
+                    String url = r.getUrl();
+                    //判断资源文件和权限的对应关系，如果已经存在相关的资源url，则要通过该url为key提取出权限集合，将权限增加到权限集合中
+                    if (resourceMap.containsKey(url)) { //如果已存在url 加入权限
+                        Collection<ConfigAttribute> value = resourceMap.get(url);
+                        value.add(ca);
+                        resourceMap.put(url, value);
+                    } else {//如果不存存在url 加入url和权限
+                        Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
+                        atts.add(ca);
+                        resourceMap.put(url, atts);
+                    }
+                });
             });
-        }
     }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        // object 是一个URL，被用户请求的url。</span>
+        //TODO: object 是一个URL，用户请求的url。
         FilterInvocation filterInvocation = (FilterInvocation) object;
+        if (resourceMap == null) {
+            loadResources();
+        }
+
+        Iterator it = resourceMap.entrySet().iterator();
+        while ( it.hasNext() ) {
+            String url = it.next().toString();
+            RequestMatcher requestMatcher = new AntPathRequestMatcher(url);
+            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
+            if (requestMatcher.matches(filterInvocation.getHttpRequest())){
+                return resourceMap.get(url);
+            }
+        }
+
+        /*Collection<ConfigAttribute> attributes = resourceMap.forEach( (k,v) ->{
+            //String url = k;
+            RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
+            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
+            if (requestMatcher.matches(filterInvocation.getHttpRequest())){
+                return resourceMap.get(k);
+            }
+        });*/
+
+        /*Collection<ConfigAttribute> attributes = resourceMap.keySet().stream().filter( k -> {
+            RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
+            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
+            if (requestMatcher.matches(filterInvocation.getHttpRequest())){
+                return resourceMap.get(k);
+            }
+        }).findAny();*/
+
         return null;
     }
 
