@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 /**
  * 该类是资源的访问权限的定义，实现资源和访问权限的对应关系
@@ -81,8 +82,7 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         if (resourceMap == null) {
             loadResources();
         }
-
-        Iterator it = resourceMap.entrySet().iterator();
+        /*Iterator it = resourceMap.entrySet().iterator();
         while ( it.hasNext() ) {
             String url = it.next().toString();
             RequestMatcher requestMatcher = new AntPathRequestMatcher(url);
@@ -90,24 +90,13 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
             if (requestMatcher.matches(filterInvocation.getHttpRequest())){
                 return resourceMap.get(url);
             }
-        }
-
-        /*Collection<ConfigAttribute> attributes = resourceMap.forEach( (k,v) ->{
-            //String url = k;
+        }*/
+        resourceMap.keySet()
+                .stream().filter( k-> {
             RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
             //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
-            if (requestMatcher.matches(filterInvocation.getHttpRequest())){
-                return resourceMap.get(k);
-            }
-        });*/
-
-        /*Collection<ConfigAttribute> attributes = resourceMap.keySet().stream().filter( k -> {
-            RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
-            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
-            if (requestMatcher.matches(filterInvocation.getHttpRequest())){
-                return resourceMap.get(k);
-            }
-        }).findAny();*/
+            return requestMatcher.matches(filterInvocation.getHttpRequest());
+        }).collect(Collectors.toList());
 
         return null;
     }
