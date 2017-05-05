@@ -1,11 +1,11 @@
-package org.springframe.service.impl;
+package org.springframe.system.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframe.constans.Constans;
-import org.springframe.dao.SystemUserDao;
-import org.springframe.domain.SystemUser;
-import org.springframe.service.SystemUserService;
+import org.springframe.system.dao.SystemUserDao;
+import org.springframe.system.domain.SystemUser;
+import org.springframe.system.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package org.springframe.dao;
+package org.springframe.system.dao;
 
-import org.springframe.domain.SystemUser;
+import org.springframe.system.domain.SystemUser;
 
 /**
  * Created by HeYixuan on 2017/4/19.

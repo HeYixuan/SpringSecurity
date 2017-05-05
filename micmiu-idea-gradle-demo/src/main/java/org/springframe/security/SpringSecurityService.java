@@ -1,10 +1,10 @@
 package org.springframe.security;
 
 
-import org.springframe.dao.SystemUserDao;
-import org.springframe.domain.SystemRole;
-import org.springframe.domain.SystemUser;
-import org.springframe.service.SystemRoleService;
+import org.springframe.system.dao.SystemUserDao;
+import org.springframe.system.domain.SystemRole;
+import org.springframe.system.domain.SystemUser;
+import org.springframe.system.service.SystemRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

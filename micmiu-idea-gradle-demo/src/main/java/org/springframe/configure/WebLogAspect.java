@@ -23,7 +23,7 @@ public class WebLogAspect {
     private Logger logger = Logger.getLogger(getClass());
     ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Pointcut("execution(public * org.springframe.web..*.*(..))")
+    @Pointcut("execution(public * org.springframe.*.web..*.*(..))")
     public void webLog(){}
 
     @Before("webLog()")

@@ -1,9 +1,9 @@
 package org.springframe.configure;
 
-import org.springframe.dao.SystemResourcesDao;
-import org.springframe.dao.SystemRoleDao;
-import org.springframe.domain.SystemResources;
-import org.springframe.domain.SystemRole;
+import org.springframe.system.dao.SystemResourcesDao;
+import org.springframe.system.dao.SystemRoleDao;
+import org.springframe.system.domain.SystemResources;
+import org.springframe.system.domain.SystemRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -11,11 +11,10 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.util.CollectionUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -30,6 +29,7 @@ import java.util.stream.Collectors;
  * @author HeYixuan
  * @create 2017-04-27 22:05
  */
+@Service
 public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     @Autowired
@@ -40,16 +40,12 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
     private ConcurrentMap<String, Collection<ConfigAttribute>> resourceMap = null;
 
 
-    public void init(){
-
-    }
-
     /**
      *
      * 程序启动的时候就加载所有资源信息
      * 初始化资源与权限的映射关系
      */
-    public void loadResources(){
+    public void initResources(){
         // 在Web服务器启动时，提取系统中的所有权限
         Collection<SystemRole> roles = systemRoleDao.getList();
         //Collection<SystemResources> resources = systemResourcesDao.getList();
@@ -80,7 +76,7 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         //TODO: object 是一个URL，用户请求的url。
         FilterInvocation filterInvocation = (FilterInvocation) object;
         if (resourceMap == null) {
-            loadResources();
+            initResources();
         }
         /*Iterator it = resourceMap.entrySet().iterator();
         while ( it.hasNext() ) {
@@ -91,8 +87,7 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
                 return resourceMap.get(url);
             }
         }*/
-        resourceMap.keySet()
-                .stream().filter( k-> {
+        resourceMap.keySet().stream().filter( k -> {
             RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
             //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
             return requestMatcher.matches(filterInvocation.getHttpRequest());

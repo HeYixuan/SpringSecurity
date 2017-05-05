@@ -1,4 +1,4 @@
-package org.springframe.service;
+package org.springframe.system.service;
 
 import org.springframework.security.authentication.LockedException;
 

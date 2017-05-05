@@ -2,8 +2,8 @@ package org.springframe.test.dao;
 
 import org.junit.Test;
 import org.springframe.test.BaseTest;
-import org.springframe.domain.SystemUser;
-import org.springframe.dao.SystemUserDao;
+import org.springframe.system.domain.SystemUser;
+import org.springframe.system.dao.SystemUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;

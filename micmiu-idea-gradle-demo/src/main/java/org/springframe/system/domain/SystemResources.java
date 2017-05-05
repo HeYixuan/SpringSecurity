@@ -1,11 +1,10 @@
-package org.springframe.domain;
+package org.springframe.system.domain;
 
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -1,7 +1,7 @@
-package org.springframe.dao.impl;
+package org.springframe.system.dao.impl;
 
-import org.springframe.dao.SystemRoleDao;
-import org.springframe.domain.SystemRole;
+import org.springframe.system.dao.SystemRoleDao;
+import org.springframe.system.domain.SystemRole;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

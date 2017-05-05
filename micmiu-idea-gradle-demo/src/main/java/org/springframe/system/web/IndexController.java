@@ -1,4 +1,4 @@
-package org.springframe.web;
+package org.springframe.system.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

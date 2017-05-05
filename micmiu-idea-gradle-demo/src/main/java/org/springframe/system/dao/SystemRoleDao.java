@@ -1,6 +1,6 @@
-package org.springframe.dao;
+package org.springframe.system.dao;
 
-import org.springframe.domain.SystemRole;
+import org.springframe.system.domain.SystemRole;
 
 import java.util.List;
 

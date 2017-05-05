@@ -1,7 +1,7 @@
-package org.springframe.dao.impl;
+package org.springframe.system.dao.impl;
 
-import org.springframe.dao.SystemUserDao;
-import org.springframe.domain.SystemUser;
+import org.springframe.system.dao.SystemUserDao;
+import org.springframe.system.domain.SystemUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

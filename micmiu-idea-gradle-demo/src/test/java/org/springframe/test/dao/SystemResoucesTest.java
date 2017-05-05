@@ -2,15 +2,14 @@ package org.springframe.test.dao;
 
 import org.junit.Test;
 import org.springframe.test.BaseTest;
-import org.springframe.domain.SystemResources;
-import org.springframe.dao.SystemResourcesDao;
+import org.springframe.system.domain.SystemResources;
+import org.springframe.system.dao.SystemResourcesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -104,4 +103,5 @@ public class SystemResoucesTest extends BaseTest {
             System.err.println("Key:"+resURL);
         }*/
     }
+
 }

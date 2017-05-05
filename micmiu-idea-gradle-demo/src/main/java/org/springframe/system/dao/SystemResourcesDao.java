@@ -1,6 +1,6 @@
-package org.springframe.dao;
+package org.springframe.system.dao;
 
-import org.springframe.domain.SystemResources;
+import org.springframe.system.domain.SystemResources;
 
 import java.util.Collection;
 

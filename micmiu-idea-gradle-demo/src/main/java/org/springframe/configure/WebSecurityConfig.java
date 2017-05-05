@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
  * Created by HeYixuan on 2017/4/17.
@@ -17,16 +18,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SpringSecurityService springSecurityService;
 
+    @Autowired
+    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+                .headers().frameOptions().sameOrigin().and()
                 /*.requestMatchers().antMatchers("/api/**","/oauth/**")   //配置使HttpSecurity接收以"/api/","/oauth/"开头请求。
             .and()*/
                 .authorizeRequests()
                 .antMatchers("/**/*.css", "/**/*.js", "/image/**","/static/**", "/swagger-ui.html", "/webjars/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
-                .antMatchers("/dba/**").hasAnyRole("ADMIN", "DBA")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
+//                .antMatchers("/dba/**").hasAnyRole("ADMIN", "DBA")
                 .anyRequest().authenticated()
             .and()
                 .formLogin()

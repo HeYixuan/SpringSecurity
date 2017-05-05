@@ -37,7 +37,7 @@ import java.util.Iterator;
  */
 
 @Service
-public class CustomAccessDecisionManager implements AccessDecisionManager {
+public class MyAccessDecisionManager implements AccessDecisionManager {
 
     /**
      * 该方法：需要比较权限和权限配置
@@ -50,7 +50,17 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
         if (configAttributes==null){
             return;
         }
-        Iterator<ConfigAttribute> iter = configAttributes.iterator();
+
+        configAttributes.stream().forEach( ca -> {
+            String needRole = ca.getAttribute();
+            authentication.getAuthorities().stream().forEach( gra ->{
+                if (needRole.trim().equals(gra.getAuthority())){
+                    return ;
+                }
+            });
+        });
+
+     /*   Iterator<ConfigAttribute> iter = configAttributes.iterator();
         while(iter.hasNext()){
             ConfigAttribute ca = iter.next();
             String needRole = ((SecurityConfig) ca).getAttribute();
@@ -60,7 +70,8 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
                     return;
                 }
             }
-        }
+        }*/
+
         throw new AccessDeniedException("Access Denied");
     }
 

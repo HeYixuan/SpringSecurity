@@ -1,4 +1,4 @@
-package org.springframe.dao.impl;
+package org.springframe.system.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

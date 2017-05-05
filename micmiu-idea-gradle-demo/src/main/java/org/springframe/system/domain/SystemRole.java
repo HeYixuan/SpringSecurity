@@ -1,4 +1,4 @@
-package org.springframe.domain;
+package org.springframe.system.domain;
 
 import org.springframe.constans.ROLE;
 

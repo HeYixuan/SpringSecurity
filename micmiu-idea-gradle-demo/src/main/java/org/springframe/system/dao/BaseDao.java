@@ -1,4 +1,4 @@
-package org.springframe.dao;
+package org.springframe.system.dao;
 
 import org.springframe.utils.Page;
 

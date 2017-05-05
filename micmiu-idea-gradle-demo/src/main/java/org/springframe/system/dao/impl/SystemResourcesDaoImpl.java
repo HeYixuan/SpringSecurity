@@ -1,7 +1,7 @@
-package org.springframe.dao.impl;
+package org.springframe.system.dao.impl;
 
-import org.springframe.dao.SystemResourcesDao;
-import org.springframe.domain.SystemResources;
+import org.springframe.system.dao.SystemResourcesDao;
+import org.springframe.system.domain.SystemResources;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;

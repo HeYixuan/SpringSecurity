@@ -1,6 +1,6 @@
-package org.springframe.service;
+package org.springframe.system.service;
 
-import org.springframe.domain.SystemRole;
+import org.springframe.system.domain.SystemRole;
 import java.util.List;
 
 /**

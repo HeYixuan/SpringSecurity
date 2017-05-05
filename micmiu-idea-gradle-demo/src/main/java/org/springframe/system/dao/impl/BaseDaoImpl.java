@@ -1,4 +1,4 @@
-package org.springframe.dao.impl;
+package org.springframe.system.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframe.dao.BaseDao;
+import org.springframe.system.dao.BaseDao;
 import org.springframe.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
