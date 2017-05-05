@@ -48,12 +48,10 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         Collection<SystemRole> roles = systemRoleDao.getList();
         //Collection<SystemResources> resources = systemResourcesDao.getList();
         //应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
-
         resourceMap = new ConcurrentHashMap<String, Collection<ConfigAttribute>>();
             roles.forEach( role -> {
                 ConfigAttribute ca = new SecurityConfig(role.getName().name());
                 Collection<SystemResources> resources = systemResourcesDao.loadByRole(role.getId());
-                System.out.println("资源:"+resources.toString());
                 resources.forEach( r -> {
                     //ConfigAttribute ca = new SecurityConfig(role.getName().name());
                     String url = r.getUrl();
@@ -87,11 +85,13 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
                 return resourceMap.get(url);
             }
         }
+
         /*return resourceMap.keySet().stream().filter( k -> {
             RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
             //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
             return requestMatcher.matches(filterInvocation.getHttpRequest());
         }).map(url->resourceMap.get(url)).findAny().orElse(null);*/
+
 
         return null;
     }
