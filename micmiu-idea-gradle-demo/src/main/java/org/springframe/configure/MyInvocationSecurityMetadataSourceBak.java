@@ -13,7 +13,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * @create 2017-04-27 22:05
  */
 @Service
-public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+public class MyInvocationSecurityMetadataSourceBak implements FilterInvocationSecurityMetadataSource {
 
     @Autowired
     private SystemRoleDao systemRoleDao;
@@ -38,24 +39,23 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
 
     private ConcurrentMap<String, Collection<ConfigAttribute>> resourceMap = null;
 
+
     /**
      *
      * 程序启动的时候就加载所有资源信息
      * 初始化资源与权限的映射关系
      */
-    public void init(){
+    public void initResources(){
         // 在Web服务器启动时，提取系统中的所有权限
         Collection<SystemRole> roles = systemRoleDao.getList();
         //Collection<SystemResources> resources = systemResourcesDao.getList();
         //应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
 
-        resourceMap = new ConcurrentHashMap<String, Collection<ConfigAttribute>>();
+        resourceMap =  new ConcurrentHashMap<>();
             roles.forEach( role -> {
-                ConfigAttribute ca = new SecurityConfig(role.getName().name());
                 Collection<SystemResources> resources = systemResourcesDao.loadByRole(role.getId());
-                System.out.println("资源:"+resources.toString());
                 resources.forEach( r -> {
-                    //ConfigAttribute ca = new SecurityConfig(role.getName().name());
+                    ConfigAttribute ca = new SecurityConfig(role.getName().name());
                     String url = r.getUrl();
                     //判断资源文件和权限的对应关系，如果已经存在相关的资源url，则要通过该url为key提取出权限集合，将权限增加到权限集合中
                     if (resourceMap.containsKey(url)) { //如果已存在url 加入权限
@@ -76,9 +76,9 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         //TODO: object 是一个URL，用户请求的url。
         FilterInvocation filterInvocation = (FilterInvocation) object;
         if (resourceMap == null) {
-            init();
+            initResources();
         }
-        Iterator it = resourceMap.keySet().iterator();
+        /*Iterator it = resourceMap.entrySet().iterator();
         while ( it.hasNext() ) {
             String url = it.next().toString();
             RequestMatcher requestMatcher = new AntPathRequestMatcher(url);
@@ -86,12 +86,12 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
             if (requestMatcher.matches(filterInvocation.getHttpRequest())){
                 return resourceMap.get(url);
             }
-        }
-        /*return resourceMap.keySet().stream().filter( k -> {
+        }*/
+        resourceMap.keySet().stream().filter( k -> {
             RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
             //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
             return requestMatcher.matches(filterInvocation.getHttpRequest());
-        }).map(url->resourceMap.get(url)).findAny().orElse(null);*/
+        }).collect(Collectors.toList());
 
         return null;
     }

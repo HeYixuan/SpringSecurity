@@ -47,12 +47,12 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        if (configAttributes==null){
+        if (configAttributes == null){
             return;
         }
 
         configAttributes.stream().forEach( ca -> {
-            String needRole = ca.getAttribute();
+            String needRole = ((SecurityConfig)ca).getAttribute();
             authentication.getAuthorities().stream().forEach( gra ->{
                 if (needRole.trim().equals(gra.getAuthority())){
                     return ;
