@@ -6,11 +6,9 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * 该类为访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源，实现用户和访问权限的对应关系。
@@ -59,18 +57,6 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
                 }
             });
         });
-
-     /*   Iterator<ConfigAttribute> iter = configAttributes.iterator();
-        while(iter.hasNext()){
-            ConfigAttribute ca = iter.next();
-            String needRole = ((SecurityConfig) ca).getAttribute();
-            //gra 为用户所被赋予的权限，needRole为访问相应的资源应具有的权限
-            for (GrantedAuthority gra : authentication.getAuthorities()) {
-                if (needRole.trim().equals(gra.getAuthority().trim())) {
-                    return;
-                }
-            }
-        }*/
 
         throw new AccessDeniedException("Access Denied");
     }
