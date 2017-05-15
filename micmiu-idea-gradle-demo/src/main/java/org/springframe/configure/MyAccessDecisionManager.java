@@ -3,12 +3,13 @@ package org.springframe.configure;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * 该类为访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源，实现用户和访问权限的对应关系。
@@ -49,14 +50,27 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             return;
         }
 
-        configAttributes.stream().forEach( ca -> {
-            String needRole = ((SecurityConfig)ca).getAttribute();
+        //FilterInvocation filterInvocation = (FilterInvocation) object;
+        //都说了让你不要用Lambda你都还没理解到blambda的逻辑,改成循环吧.就OK了 奥
+        Iterator<ConfigAttribute> ite = configAttributes.iterator();
+        while (ite.hasNext()) {
+            ConfigAttribute ca = ite.next();
+            String needRole = ca.getAttribute();
+            //ga 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。
+            for (GrantedAuthority ga : authentication.getAuthorities()) {
+                if (needRole.trim().equals(ga.getAuthority().trim())) {
+                    return;
+                }
+            }
+        }
+        /*configAttributes.stream().forEach( ca -> {
+            String needRole = ca.getAttribute();
             authentication.getAuthorities().stream().forEach( gra ->{
-                if (needRole.trim().equals(gra.getAuthority())){
+                if (needRole.trim().equals(gra.getAuthority().trim())){
                     return ;
                 }
             });
-        });
+        });*/
 
         throw new AccessDeniedException("Access Denied");
     }

@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
-
 /**
  * 该类是资源的访问权限的定义，实现资源和访问权限的对应关系
  * 该类的主要作用是在Spring Security的整个过滤链启动后，
@@ -80,19 +78,11 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         while ( it.hasNext() ) {
             String url = it.next().toString();
             RequestMatcher requestMatcher = new AntPathRequestMatcher(url);
-            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
+            //这里做权限验证匹配如果匹配到角色对应列表那么执行MyAccessDecisionManager进行更细致的权限验证(重点！！！！)
             if (requestMatcher.matches(filterInvocation.getHttpRequest())){
                 return resourceMap.get(url);
             }
         }
-
-        /*return resourceMap.keySet().stream().filter( k -> {
-            RequestMatcher requestMatcher = new AntPathRequestMatcher(k);
-            //这里做权限验证匹配如果匹配到角色对应列表那么执行CustomAccessDecisionManager进行更细致的权限验证(重点！！！！)
-            return requestMatcher.matches(filterInvocation.getHttpRequest());
-        }).map(url->resourceMap.get(url)).findAny().orElse(null);*/
-
-
         return null;
     }
 
